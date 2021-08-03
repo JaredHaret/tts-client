@@ -4,10 +4,10 @@
 
 ### Build docker image
 
-To prepare a docker image with Python implementation of the TTS Client, open the project's main directory and run following command:
+To prepare a docker image with Python implementation of the TTS Client, use the building script:
 
 ```
-docker build -f Dockerfile-python -t tts-client-python:2.1.1 . 
+./build_docker_image.sh
 ```
 The build process will take several minutes.
 When the build process is complete, you will receive a message:

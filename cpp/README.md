@@ -1,16 +1,15 @@
 # C++ implementation of Techmo TTS gRPC client.
 
-
 ## Docker usage
 
 #### Build docker image
 
-To prepare docker image with c++ implementation of tts client, open project's main directory and run:
+To prepare docker image with c++ implementation of TTS Client, use the building script:
 
 ```
-docker build -f Dockerfile-cpp -t tts-client-cpp:2.1.1 . 
+./build_docker_image.sh
 ```
-**Note:** the build process may take several dozen minutes. If you don't want to wait so long, use Python implementation instead.
+**Note:** the build process may take several dozen minutes. For shorter build time, use Python implementation instead.
 When the build process is complete, you will receive a message:
 ```
 Successfully tagged tts-client-cpp:2.1.1
