@@ -1,12 +1,12 @@
 from argparse import ArgumentParser
 import codecs
-from VERSION import TTS_CLIENT_VERSION
+from VERSION import __version__
 from call_listvoices import call_listvoices
 from call_synthesize import call_synthesize
 
 
 def main():
-    print("Techmo TTS gRPC client " + TTS_CLIENT_VERSION)
+    print("Techmo TTS gRPC client " + __version__)
 
     parser = ArgumentParser()
     parser.add_argument("-s", "--service-address", dest="service", required=True,
