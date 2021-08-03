@@ -1,0 +1,48 @@
+name: Publish deploy images
+on:
+  release:
+    types: [published]
+
+jobs:
+
+  python-build:
+    name: Build and publish Python image
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: build docker image and push to repository
+        env:
+          REPOSITORY: jaredharet/private
+          DOCKER_LOGIN: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASS }}
+        run: |
+          cd python
+          VERSION_TAG=$(awk < VERSION.py '/__version__/ { print $NF }' | cut -d\" -f2)
+          ./build_docker_image.sh "${VERSION_TAG}"
+          docker login -u "${DOCKER_LOGIN}" -p "${DOCKER_PASSWORD}" docker.io
+          docker tag tts-client-python:"${VERSION_TAG}" "${REPOSITORY}":tts-client-python-"${VERSION_TAG}"
+          docker push "${REPOSITORY}":tts-client-python-"${VERSION_TAG}"
+
+  cpp-build:
+    name: Build and publish C++ image
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: initialize submodules
+        run: git submodule update --init --recursive --progress --depth 1
+      - name: build docker image and push to repository
+        env:
+          REPOSITORY: jaredharet/private
+          DOCKER_LOGIN: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASS }}
+        run: |
+          cd cpp
+          VERSION_TAG=$(awk < libtts-client/VERSION.h '/LIBtts_CLIENT_VERSION/ { print $NF }' | cut -d\" -f2)
+          ./build_docker_image.sh "${VERSION_TAG}"
+          docker login -u "${DOCKER_LOGIN}" -p "${DOCKER_PASSWORD}" docker.io
+          docker tag tts-client-cpp:"${VERSION_TAG}" "${REPOSITORY}":tts-client-cpp-"${VERSION_TAG}"
+          docker push "${REPOSITORY}":tts-client-cpp-"${VERSION_TAG}"
