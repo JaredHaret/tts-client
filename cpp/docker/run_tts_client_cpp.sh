@@ -14,7 +14,7 @@ SCRIPTPATH=$(dirname "${SCRIPT}")
 docker_image="tts-client-cpp:${IMAGE_VERSION}"
 
 
-output_path="/volumen/wav/TechmoTTS.wav"
+output_path="/volume/wav/TechmoTTS.wav"
 
 usage() {
 
@@ -76,7 +76,7 @@ while getopts "${optspec}" optchar; do
                     usage; exit 0 
                     ;;
                 output-file)  
-                    output_path="/volumen/wav/${val##*/}"
+                    output_path="/volume/wav/${val##*/}"
                     ;;
                 list-voices)  
                     opts+=( "--list-voices" )
@@ -126,7 +126,7 @@ while getopts "${optspec}" optchar; do
             ;;
         o)                      
             val=${OPTARG#*=}
-            output_path="/volumen/wav/${val##*/}"
+            output_path="/volume/wav/${val##*/}"
             ;;
         r)                      
             val=${OPTARG#*=}
@@ -158,5 +158,5 @@ opts+=( "--out-path" "${output_path}" )
 
 echo "${opts[@]}"
 
-docker run --rm -it -v "${SCRIPTPATH}:/volumen" --network host "${docker_image}" \
+docker run --rm -it -v "${SCRIPTPATH}:/volume" --network host "${docker_image}" \
 ./cpp/build/tts_client "${opts[@]}"
