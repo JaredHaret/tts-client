@@ -7,13 +7,11 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-IMAGE_VERSION=2.1.1
+IMAGE_VERSION=2.2.0
 
 SCRIPT=$(realpath "$0")
 SCRIPTPATH=$(dirname "${SCRIPT}")
 docker_image="tts-client-cpp:${IMAGE_VERSION}"
-
-
 output_path="/volume/wav/TechmoTTS.wav"
 
 usage() {
@@ -33,11 +31,10 @@ Techmo TTS gRPC client ${IMAGE_VERSION}
   -r=RESPONSE, --response=RESPONSE
                         streaming or single, calls the streaming (default) or non-streaming version of Synthesize.
   -t=TEXT, --text=TEXT  A text to be synthesized.
-  -i=INPUTFILE, --input-text-file=INPUTFILE
-                        A name of the plaintext file with text to be synthesized. File should be placed inside 'txt' directory.
   -o=OUTPUT_FILE, --output-file=OUTPUT_FILE
                         A custom name for output wave file with synthesized audio content (default: 'TechmoTTS.wav'). 
                         File will be generated inside 'wav' directory.
+  --tls                 Use SSL/TLS authentication. The credential files (client.crt, client.key, ca.crt) should be placed inside 'tls' directory.
   -f=SAMPLE_RATE, --sample-rate=SAMPLE_RATE
                         A sample rate in Hz of synthesized audio. Set to 0 (default) to use voice's original sample rate.
   --ae=AUDIO_ENCODING, --audio-encoding=AUDIO_ENCODING
@@ -80,6 +77,9 @@ while getopts "${optspec}" optchar; do
                     ;;
                 list-voices)  
                     opts+=( "--list-voices" )
+                    ;;
+                tls)
+                    opts+=( "--tls-dir" "/volume/tls")   
                     ;;
                 ae)
                     opts+=( "--audio-encoding" "${val}" )

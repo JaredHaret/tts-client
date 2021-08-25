@@ -77,8 +77,11 @@ install_package "python3-dev" "${sudo_str}"
 install_package "libportaudio2" "${sudo_str}"
 install_package "python3-pip" "${sudo_str}"
 
+# build proto sources
+./make_proto.sh
+
 rm -rf .env
-python3 -m venv .env
+virtualenv -p python3 .env
 source .env/bin/activate
 pip3 install --upgrade pip
 pip3 install wheel

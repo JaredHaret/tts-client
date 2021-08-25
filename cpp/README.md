@@ -12,7 +12,7 @@ To prepare docker image with c++ implementation of TTS Client, use the building 
 **Note:** the build process may take several dozen minutes. For shorter build time, use Python implementation instead.
 When the build process is complete, you will receive a message:
 ```
-Successfully tagged tts-client-cpp:2.1.1
+Successfully tagged tts-client-cpp:2.2.0
 ```
 
 #### Run tts client
@@ -49,16 +49,18 @@ This project uses cmake build.
     Default location: `/opt/boost_1_74_0`  
     If not installed, from parent directory run `sudo ./tools/install_boost.sh`  
 - gRPC      provided as `grpc_pkg`  
-    Default location: `/opt/grpc_v1.24.3`  
+    Default location: `/opt/grpc_v1.38.1`  
     If not installed, from parent directory run `sudo ./tools/install_grpc.sh`  
 - OpenSSL   provided as `ssl_pkg`  
 - DL        provided as `dl_pkg`  
 
-To regenerate sources from `.proto`, run:
+
+### Proto sources
+
+To build the sources from `.proto`, run:
 ```
 ./make_proto.sh
 ```
-This might be required when using other gRPC or Protocol Buffers version.
 
 ### Build:
 ```

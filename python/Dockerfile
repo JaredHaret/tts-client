@@ -2,12 +2,21 @@ FROM python:3.6-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-ADD ./python /tts_client
+ADD ./python /tts_client/python
+ADD ./proto /tts_client/proto
 
-WORKDIR /tts_client
+WORKDIR /tts_client/python
 
-RUN ./setup.sh -y
+RUN ./make_proto.sh
 
-RUN apt-get clean \
+RUN apt-get update \
+    && apt-get dist-upgrade -y \
+    && apt-get install -y --no-install-recommends \
+        build-essential \
+        libportaudio2 \
+        python3-pip \
+        python3-dev \
+    && apt-get clean \
 	&& rm -fr /var/lib/apt/lists/* \
-	&& rm -fr /var/cache/apt/* 
+	&& rm -fr /var/cache/apt/* \
+    && pip3 install -r requirements.txt
