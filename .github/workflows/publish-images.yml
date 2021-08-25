@@ -46,3 +46,4 @@ jobs:
           docker login -u "${DOCKER_LOGIN}" -p "${DOCKER_PASSWORD}" docker.io
           docker tag tts-client-cpp:"${VERSION_TAG}" "${REPOSITORY}":tts-client-cpp-"${VERSION_TAG}"
           docker push "${REPOSITORY}":tts-client-cpp-"${VERSION_TAG}"
+          
