@@ -2,6 +2,11 @@ from argparse import ArgumentParser
 import codecs
 from VERSION import TTS_CLIENT_VERSION
 from call_listvoices import call_listvoices
+from call_listlexicons import call_listlexicons
+from call_getlexicon import call_getlexicon
+from call_deletelexicon import call_deletelexicon
+from call_putlexicon import call_putlexicon
+
 from call_synthesize import call_synthesize
 
 
@@ -49,6 +54,14 @@ def main():
         help="Play synthesized audio. Works only with pcm16 (default) encoding.")
     parser.add_argument("--tls-dir", dest="tls_directory", default="",
         help="If set to a path with SSL/TLS credential files (client.crt, client.key, ca.crt), use SSL/TLS authentication. Otherwise use insecure channel (default).", type=str)
+    parser.add_argument("--list-lexicons", dest="list_lexicons", action='store_true', default=False,
+        help="Lists all available lexicons.")
+    parser.add_argument("--get-lexicon", dest="lexicon_to_get", default="",
+        help="Sends back the content of the lexicon with the requested name.", type=str)
+    parser.add_argument("--delete-lexicon", dest="lexicon_to_delete", default="",
+        help="Removes the lexicon with the requested name.", type=str)
+    parser.add_argument("--put-lexicon", nargs=2, metavar=("LEXICON_TO_PUT", "LEXICON_CONTENT"),
+        help="Adds a new lexicon with the requested name or overwrites the existing one if there is already a lexicon with such name. Content of the lexicon, shall comply to https://www.w3.org/TR/pronunciation-lexicon/.", type=str)
 
     # Parse and validate options
     args = parser.parse_args()
@@ -59,6 +72,22 @@ def main():
 
     if args.list_voices:
         call_listvoices(args)
+        return
+    
+    if args.list_lexicons:
+        call_listlexicons(args)
+        return
+    
+    if (args.lexicon_to_get != ""):
+        call_getlexicon(args)
+        return
+
+    if (args.lexicon_to_delete != ""):
+        call_deletelexicon(args)
+        return
+    
+    if (args.put_lexicon[0] != ""):
+        call_putlexicon(args)
         return
 
     # Input text determination
